@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+canvas {
+    position: absolute;
+    display: block;
+}
+
+svg {
+    position: absolute;
+    display: none;
+}
