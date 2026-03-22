@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     // Create and play background music
     const audio = new Audio('/music/BongocatBackgroundmusic.mp3');
-    audio.volume = volume / 100;
+    audio.volume = 0.4; // Initial volume 40%
     audio.loop = true;
     audio.play().catch((error) => {
       console.warn('Audio playback failed:', error);
@@ -28,6 +28,13 @@ function App() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    // Update volume when state changes
+    if (audioRef.current && !isMuted) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume, isMuted]);
 
   const handleMuteToggle = () => {
     if (audioRef.current) {
