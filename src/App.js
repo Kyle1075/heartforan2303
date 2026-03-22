@@ -10,21 +10,46 @@ function App() {
   const [volume, setVolume] = useState(40);
 
   useEffect(() => {
-    // Create and play background music
-    const audio = new Audio('/music/BongocatBackgroundmusic.mp3');
-    audio.volume = 0.4; // Initial volume 40%
-    audio.loop = true;
-    audio.play().catch((error) => {
-      console.warn('Audio playback failed:', error);
-    });
+    let audio;
+    let hasInteracted = false;
+
+    const startAudio = () => {
+      if (hasInteracted || !audio) return;
+      hasInteracted = true;
+
+      audio.volume = 0.4; // 40% volume
+      audio.loop = true;
+      audio.play().catch((error) => {
+        console.warn('Audio playback failed:', error);
+      });
+    };
+
+    // Create audio element
+    audio = new Audio('/music/BongocatBackgroundmusic.mp3');
     audioRef.current = audio;
+
+    // Listen for first user interaction
+    const interactionHandler = () => {
+      startAudio();
+      // Remove listeners after first interaction
+      document.removeEventListener('click', interactionHandler);
+      document.removeEventListener('touchstart', interactionHandler);
+      document.removeEventListener('keydown', interactionHandler);
+    };
+
+    document.addEventListener('click', interactionHandler);
+    document.addEventListener('touchstart', interactionHandler);
+    document.addEventListener('keydown', interactionHandler);
 
     // Cleanup on unmount
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
+      document.removeEventListener('click', interactionHandler);
+      document.removeEventListener('touchstart', interactionHandler);
+      document.removeEventListener('keydown', interactionHandler);
+      if (audio) {
+        audio.pause();
+        audio.src = '';
+        audio = null;
       }
     };
   }, []);
